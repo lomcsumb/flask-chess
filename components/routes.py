@@ -35,7 +35,7 @@ player.rl_agent.is_trained = True # set this to trained since we assigned a pree
 
 # controller = StartGame(copy.deepcopy(player))
 player_copy = copy.deepcopy(player)
-controller = StartGame(player_copy)
+# controller = StartGame(player_copy)
 
 @app.route("/")
 def index():
