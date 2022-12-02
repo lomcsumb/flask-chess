@@ -115,7 +115,7 @@ def moveagent():
         controller.agentmove = controller.player.rl_agent_chess_move()
         return "Success"
 
-@app.route("/movewhite", methods=['GET','POST'])
+@app.route("/movewhite", methods=['POST'])
 def movewhite():
     if request.method == 'POST':
         move = request.json
@@ -126,7 +126,7 @@ def movewhite():
         # print(controller.board)
         return "Success"
 
-@app.route("/moveblack", methods=['GET','POST'])
+@app.route("/moveblack", methods=['POST'])
 def moveblack():
     if request.method == 'POST':
         move = request.json
