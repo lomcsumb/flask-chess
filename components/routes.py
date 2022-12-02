@@ -72,6 +72,7 @@ def startgame():
             "best_move": chess_move_str,
             "ascii": str(controller.player.get_chessboard())
             }
+    print(returnObj)
     return jsonify(returnObj)
 
 @app.route("/endgame")
@@ -98,11 +99,14 @@ def getmoves():
                 "fen_string": fen_string,
                 "ascii": str(controller.player.get_chessboard())
                 }
+
+    print(returnObj)
     return jsonify(returnObj)
 
 @app.route("/playermoves")
 def playermoves():
     fen_string = controller.player.get_fen_str()
+    print(fen_string)
     # player_turn = controller.play.playerTurnMessage()
     return {
             "fen_string": fen_string,
@@ -134,10 +138,10 @@ def moveblack():
         controller.player.recv_opp_move(move)
         print(move)
         # print(controller.board)
-        returnObj = {'Success':True}
-        return jsonify(returnObj)
-    else:
-        return jsonify({'Success':False})
+    #     returnObj = {'Success':True}
+    #     return jsonify(returnObj)
+    # else:
+    #     return jsonify({'Success':False})
 # @app.route("/movewhite", methods=['GET','POST'])
 # def movewhite():
 #     if request.method == 'POST':
