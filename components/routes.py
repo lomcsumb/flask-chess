@@ -61,9 +61,12 @@ def startgame():
     # controller.start_game(board)
     # legal_moves = controller.boardState.load_legal_moves_list()
     # legal_moves = load_legal_moves_list(controller.board)
-    controller.clearBoard()
-    player_copy = copy.deepcopy(player)
-    controller.setBoard(player_copy)
+    # controller.clearBoard()
+    # player_copy = copy.deepcopy(player)
+    # controller.setBoard(player_copy)
+
+    global controller
+    controller = StartGame(copy.deepcopy(player_copy))
     chess_move = controller.player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
     chess_move_src = chess_move['move_source']
@@ -84,7 +87,6 @@ def startgame():
 
 @app.route("/endgame")
 def endgame():
-    del controller.player
     return {"legal_moves": [],
             "player_turn": "Players has ended the game early",
             "gameStarted": False,
