@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'flask-bradley-chess'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BEF1AE79184E4FD38ADD4744E8E89F7D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7DF608F12D1746DE8BF3D1C8F9080DC6 }}
