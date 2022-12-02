@@ -1,6 +1,8 @@
+###
 import pandas as pd
 import random
 import time
+import copy
 from flask import render_template, request, redirect, jsonify
 from components import app
 from components.ml.Bradley import *
@@ -22,13 +24,14 @@ big_chess_DB = pd.read_pickle('components/small_chess_data.pkl', compression = '
 # chess_data = big_chess_DB.sample(100_000)
 chess_data = big_chess_DB.sample(20000)
 
-# player = init_agent(chess_data)
-#player = Bradley(chess_data, 'W')
+player = init_agent(chess_data)
+player = Bradley(chess_data, 'W')
 
 # load the agent with a previously trained agent's Q table
 # don't train an agent when a user want to play the game, very time-consuming
 #player.rl_agent.Q_table = pd.read_pickle(q_table_path, compression = 'zip') # pikl files load faster and the formatting is cleaner
-#player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
+player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
+player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
 @app.route("/")
 def index():
@@ -40,16 +43,16 @@ def startgame():
 
 
     # player = init_agent(chess_data)
-    player = Bradley(chess_data, 'W')
+    # player = Bradley(chess_data, 'W')
 
     # load the agent with a previously trained agent's Q table
     # don't train an agent when a user want to play the game, very time-consuming
     # player.rl_agent.Q_table = pd.read_pickle(q_table_path, compression = 'zip') # pikl files load faster and the formatting is cleaner
-    player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
-    player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
+    # player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
+    # player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
     global controller
-    controller = StartGame(player)
+    controller = StartGame(copy.deepcopy(player))
     # controller = PlayerHands(board)
     # controller.start_game(board)
     # legal_moves = controller.boardState.load_legal_moves_list()
@@ -91,6 +94,15 @@ def getmoves():
     return {"legal_moves": legal_moves,
             # "player_turn": player_turn,
             "best_move": chess_move_str,
+            "fen_string": fen_string,
+            "ascii": str(controller.player.get_chessboard())
+            }
+
+@app.route("/playermoves")
+def playermoves():
+    fen_string = controller.player.get_fen_str()
+    # player_turn = controller.play.playerTurnMessage()
+    return {
             "fen_string": fen_string,
             "ascii": str(controller.player.get_chessboard())
             }
