@@ -140,8 +140,8 @@ def moveblack():
         controller.player.recv_opp_move(str(move))
         print(move)
         # print(controller.board)
-    #     returnObj = {'Success':True}
-    #     return jsonify(returnObj)
+        returnObj = {'Success':True}
+        return jsonify(returnObj)
     # else:
     #     return jsonify({'Success':False})
 # @app.route("/movewhite", methods=['GET','POST'])
