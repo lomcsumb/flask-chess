@@ -33,7 +33,9 @@ player = Bradley(chess_data, 'W')
 player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
 player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
-controller = StartGame(copy.deepcopy(player))
+# controller = StartGame(copy.deepcopy(player))
+player_copy = copy.deepcopy(player)
+controller = StartGame(player_copy)
 
 @app.route("/")
 def index():
@@ -59,6 +61,9 @@ def startgame():
     # controller.start_game(board)
     # legal_moves = controller.boardState.load_legal_moves_list()
     # legal_moves = load_legal_moves_list(controller.board)
+    controller.clearBoard()
+    player_copy = copy.deepcopy(player)
+    controller.setBoard(player_copy)
     chess_move = controller.player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
     chess_move_src = chess_move['move_source']
@@ -79,6 +84,7 @@ def startgame():
 
 @app.route("/endgame")
 def endgame():
+    del controller.player
     return {"legal_moves": [],
             "player_turn": "Players has ended the game early",
             "gameStarted": False,

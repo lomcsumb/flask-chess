@@ -124,14 +124,15 @@ class StartGame:
     def __init__(self, player):
         self.stop = False
         self.player = player
-        self.agentmove = pd.DataFrame()
         # self.board = chess.Board()
 
-    def endGame(self):
-        self.stop = not self.stop
+    # def __init__(self):
+    #     self.stop = False
+    #     self.player = {}
+        # self.board = chess.Board()
 
-    
-    def checkStatus(self, player, boardState):
-        chess_move = player.currentMove
-        if chess_move == 'q':
-            self.endGame
+    def setBoard(self, player):
+        self.player = player
+
+    def clearBoard(self):
+        del self.player
