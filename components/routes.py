@@ -135,7 +135,7 @@ def moveblack():
     if request.method == 'POST':
         move = request.json
         # controller.playerInput(move)
-        controller.player.recv_opp_move(move)
+        controller.player.recv_opp_move(str(move))
         print(move)
         # print(controller.board)
     #     returnObj = {'Success':True}
