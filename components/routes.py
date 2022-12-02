@@ -91,12 +91,13 @@ def getmoves():
     legal_moves = controller.player.get_legal_moves()
     fen_string = controller.player.get_fen_str()
     # player_turn = controller.play.playerTurnMessage()
-    return {"legal_moves": legal_moves,
-            # "player_turn": player_turn,
-            "best_move": chess_move_str,
-            "fen_string": fen_string,
-            "ascii": str(controller.player.get_chessboard())
-            }
+    returnObj = {"legal_moves": legal_moves,
+                # "player_turn": player_turn,
+                "best_move": chess_move_str,
+                "fen_string": fen_string,
+                "ascii": str(controller.player.get_chessboard())
+                }
+    return jsonify(returnObj)
 
 @app.route("/playermoves")
 def playermoves():
