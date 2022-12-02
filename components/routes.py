@@ -35,7 +35,7 @@ player.rl_agent.is_trained = True # set this to trained since we assigned a pree
 
 # controller = StartGame(copy.deepcopy(player))
 player_copy = copy.deepcopy(player)
-# controller = StartGame(player_copy)
+controller = StartGame(player_copy)
 
 @app.route("/")
 def index():
@@ -61,12 +61,12 @@ def startgame():
     # controller.start_game(board)
     # legal_moves = controller.boardState.load_legal_moves_list()
     # legal_moves = load_legal_moves_list(controller.board)
-    # controller.clearBoard()
-    # player_copy = copy.deepcopy(player)
-    # controller.setBoard(player_copy)
+    controller.clearBoard()
+    player_copy = copy.deepcopy(player)
+    controller.setBoard(player_copy)
 
-    global controller
-    controller = StartGame(copy.deepcopy(player_copy))
+    # global controller
+    # controller = StartGame(copy.deepcopy(player_copy))
     chess_move = controller.player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
     chess_move_src = chess_move['move_source']
