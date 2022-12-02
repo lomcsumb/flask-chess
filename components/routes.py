@@ -33,6 +33,8 @@ player = Bradley(chess_data, 'W')
 player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
 player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
+controller = StartGame(copy.deepcopy(player))
+
 @app.route("/")
 def index():
     return {"DC_Trinity": ["Superman", "Batman", "Wonderwoman"]}
@@ -51,8 +53,8 @@ def startgame():
     # player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
     # player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
-    global controller
-    controller = StartGame(copy.deepcopy(player))
+    # global controller
+    # controller = StartGame(copy.deepcopy(player))
     # controller = PlayerHands(board)
     # controller.start_game(board)
     # legal_moves = controller.boardState.load_legal_moves_list()
