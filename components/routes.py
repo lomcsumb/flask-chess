@@ -129,7 +129,7 @@ def playermoves():
 @app.route("/moveblack", methods=['POST'])
 def moveblack():
     if request.method == 'POST':
-        move = request.json()
+        move = request.json
         # controller.playerInput(move)
         controller.player.recv_opp_move(move)
         print(move)
