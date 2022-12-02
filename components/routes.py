@@ -109,34 +109,35 @@ def playermoves():
             "ascii": str(controller.player.get_chessboard())
             }
 
-@app.route("/moveagent", methods=['GET', 'POST'])
-def moveagent():
-    if request.method == 'POST':
-        controller.agentmove = controller.player.rl_agent_chess_move()
-        return "Success"
+# @app.route("/moveagent", methods=['GET', 'POST'])
+# def moveagent():
+#     if request.method == 'POST':
+#         controller.agentmove = controller.player.rl_agent_chess_move()
+#         return "Success"
 
-@app.route("/movewhite", methods=['POST'])
-def movewhite():
-    if request.method == 'POST':
-        move = request.json
-        # controller.playerInput(move)
-        # controller.board.push_san(move)
+# @app.route("/movewhite", methods=['POST'])
+# def movewhite():
+#     if request.method == 'POST':
+#         move = request.json()
+#         # controller.playerInput(move)
+#         # controller.board.push_san(move)
 
-        print(move)
-        # print(controller.board)
-        return "Success"
+#         print(move)
+#         # print(controller.board)
+#         return "Success"
 
 @app.route("/moveblack", methods=['POST'])
 def moveblack():
     if request.method == 'POST':
-        move = request.json
+        move = request.json()
         # controller.playerInput(move)
         controller.player.recv_opp_move(move)
         print(move)
         # print(controller.board)
         returnObj = {'Success':True}
         return jsonify(returnObj)
-
+    else:
+        return jsonify({'Success':False})
 # @app.route("/movewhite", methods=['GET','POST'])
 # def movewhite():
 #     if request.method == 'POST':
