@@ -63,7 +63,7 @@ def startgame():
     legal_moves = controller.player.get_legal_moves()
     fen_string = controller.player.get_fen_str()
     # player_turn = controller.play.playerTurnMessage()
-    return {
+    returnObj = {
             "legal_moves": legal_moves,
             # "player_turn": player_turn,
             "gameStarted": True,
@@ -72,6 +72,7 @@ def startgame():
             "best_move": chess_move_str,
             "ascii": str(controller.player.get_chessboard())
             }
+    return jsonify(returnObj)
 
 @app.route("/endgame")
 def endgame():
