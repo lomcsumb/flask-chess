@@ -72,7 +72,7 @@ def startgame():
     controller = StartGame(copy.deepcopy(player_copy))
     chess_move = controller.player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
-    chess_move_src = chess_move['move_source']
+    #chess_move_src = chess_move['move_source']
     legal_moves = controller.player.get_legal_moves()
     fen_string = controller.player.get_fen_str()
     # player_turn = controller.play.playerTurnMessage()
