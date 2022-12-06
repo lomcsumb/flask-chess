@@ -4,6 +4,7 @@ import random
 import time
 import copy
 from flask import render_template, request, redirect, jsonify
+from flask_cors import cross_origin
 from components import app
 from components.ml.Bradley import *
 # from components.ml.src.helper_methods import init_agent
@@ -38,10 +39,12 @@ player_copy = copy.deepcopy(player)
 # controller = StartGame(player_copy)
 
 @app.route("/")
+@cross_origin()
 def index():
     return {"DC_Trinity": ["Superman", "Batman", "Wonderwoman"]}
 
 @app.route("/startgame")
+@cross_origin()
 def startgame():
     # player = PlayerHands()
 
@@ -86,6 +89,7 @@ def startgame():
     return jsonify(returnObj)
 
 @app.route("/endgame")
+@cross_origin()
 def endgame():
     return {"legal_moves": [],
             "player_turn": "Players has ended the game early",
@@ -94,6 +98,7 @@ def endgame():
             }
 
 @app.route("/getmoves")
+@cross_origin()
 def getmoves():
     # legal_moves = load_legal_moves_list(controller.board)
     chess_move = controller.player.rl_agent_chess_move()
@@ -114,6 +119,7 @@ def getmoves():
     return jsonify(returnObj)
 
 @app.route("/playermoves")
+@cross_origin()
 def playermoves():
     fen_string = controller.player.get_fen_str()
     print(fen_string)
@@ -141,6 +147,7 @@ def playermoves():
 #         return "Success"
 
 @app.route("/moveblack", methods=['POST'])
+@cross_origin()
 def moveblack():
     if request.method == 'POST':
         move = request.json
@@ -163,6 +170,7 @@ def moveblack():
 #         return "Success"
 
 @app.route("/board")
+@cross_origin()
 def board():
     return {"DC_Trinity": ["Superman", "Batman", "Wonderwoman"]}
 
