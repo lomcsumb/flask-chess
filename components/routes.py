@@ -31,7 +31,7 @@ player = Bradley(chess_data, 'W')
 # load the agent with a previously trained agent's Q table
 # don't train an agent when a user want to play the game, very time-consuming
 #player.rl_agent.Q_table = pd.read_pickle(q_table_path, compression = 'zip') # pikl files load faster and the formatting is cleaner
-player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
+player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table_new.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
 player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
 # controller = StartGame(copy.deepcopy(player))
