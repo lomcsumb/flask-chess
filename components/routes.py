@@ -28,14 +28,16 @@ chess_data = big_chess_DB.sample(20000)
 player = init_agent(chess_data)
 player = Bradley(chess_data, 'W')
 
+
+chess_data_list = ['components/bradley_agent_q_table.pkl', 'components/bradley_agent_q_table_25.pkl', 'components/bradley_agent_q_table_1000.pkl', 'components/bradley_agent_q_table_5000.pkl']
 # load the agent with a previously trained agent's Q table
 # don't train an agent when a user want to play the game, very time-consuming
 #player.rl_agent.Q_table = pd.read_pickle(q_table_path, compression = 'zip') # pikl files load faster and the formatting is cleaner
-player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table_new.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
-player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
+# player.rl_agent.Q_table = pd.read_pickle('components/bradley_agent_q_table_new.pkl', compression = 'zip') # pikl files load faster and the formatting is cleaner
+# player.rl_agent.is_trained = True # set this to trained since we assigned a preexisting Q table to new RL agent
 
 # controller = StartGame(copy.deepcopy(player))
-player_copy = copy.deepcopy(player)
+# player_copy = copy.deepcopy(player)
 # controller = StartGame(player_copy)
 
 @app.route("/")
@@ -47,8 +49,9 @@ def index():
 @cross_origin()
 def startgame():
     # player = PlayerHands()
-
-
+    file_path = random.choice(chess_data_list)
+    player.rl_agent.Q_table = pd.read_pickle(file_path, compression = 'zip')
+    player.rl_agent.is_trained = True
     # player = init_agent(chess_data)
     # player = Bradley(chess_data, 'W')
 
@@ -69,7 +72,7 @@ def startgame():
     # controller.setBoard(player_copy)
 
     global controller
-    controller = StartGame(copy.deepcopy(player_copy))
+    controller = StartGame(copy.deepcopy(player))
     chess_move = controller.player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
     #chess_move_src = chess_move['move_source']
