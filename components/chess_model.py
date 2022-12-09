@@ -136,3 +136,24 @@ class StartGame:
 
     def clearBoard(self):
         del self.player
+
+
+def isGameroomUsed(value, arr):
+    return value in arr
+
+def findAvailableRoom(arr):
+    searching = True
+    count = 0
+    while searching:
+        if isGameroomUsed(count, arr):
+            count = count + 1
+        else:
+            arr.append(count)
+
+def createKeys():
+    queue = 0
+    newList = []
+    while queue < 1001:
+        newList.append(queue)
+        queue = queue + 1
+    return newList

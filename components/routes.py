@@ -1,5 +1,6 @@
 ###
 import pandas as pd
+import numpy as np
 import random
 import time
 import copy
@@ -40,6 +41,10 @@ chess_data_list = ['components/bradley_agent_q_table.pkl', 'components/bradley_a
 # player_copy = copy.deepcopy(player)
 # controller = StartGame(player_copy)
 
+usedGamerooms = np.empty(1001, dtype=object)
+gameKeys = createKeys()
+
+
 @app.route("/")
 @cross_origin()
 def index():
@@ -71,14 +76,24 @@ def startgame():
     # player_copy = copy.deepcopy(player)
     # controller.setBoard(player_copy)
 
-    global controller
+    # global controller
     controller = StartGame(copy.deepcopy(player))
-    chess_move = controller.player.rl_agent_chess_move()
+    roomKey = gameKeys[0]
+    gameKeys.pop(0)
+    usedGamerooms[roomKey] = controller
+
+    # chess_move = controller.player.rl_agent_chess_move()
+    chess_move = usedGamerooms[roomKey].player.rl_agent_chess_move()
+
     chess_move_str = chess_move['chess_move_str']
     #chess_move_src = chess_move['move_source']
-    legal_moves = controller.player.get_legal_moves()
-    fen_string = controller.player.get_fen_str()
+    # legal_moves = controller.player.get_legal_moves()
+    # fen_string = controller.player.get_fen_str()
+
+    legal_moves = usedGamerooms[roomKey].player.get_legal_moves()
+    fen_string = usedGamerooms[roomKey].player.get_fen_str()
     # player_turn = controller.play.playerTurnMessage()
+
     returnObj = {
             "legal_moves": legal_moves,
             # "player_turn": player_turn,
@@ -86,50 +101,52 @@ def startgame():
             # "best_move": random.choice(legal_moves),
             "fen_string": fen_string,
             "best_move": chess_move_str,
-            "ascii": str(controller.player.get_chessboard())
+            "ascii": str(usedGamerooms[roomKey].player.get_chessboard()),
+            "roomKey": roomKey
             }
     print(returnObj)
     return jsonify(returnObj)
 
-@app.route("/endgame")
+@app.route("/<int:roomKey>/endgame")
 @cross_origin()
-def endgame():
+def endgame(roomKey):
+    gameKeys.append(roomKey)
     return {"legal_moves": [],
             "player_turn": "Players has ended the game early",
-            "gameStarted": False,
-            "ascii": str(controller.player.get_chessboard())
+            "gameStarted": False
+            # "ascii": str(usedGamerooms[roomKey].player.get_chessboard())
             }
 
-@app.route("/getmoves")
+@app.route("/<int:roomKey>/getmoves")
 @cross_origin()
-def getmoves():
+def getmoves(roomKey):
     # legal_moves = load_legal_moves_list(controller.board)
-    chess_move = controller.player.rl_agent_chess_move()
+    chess_move = usedGamerooms[roomKey].player.rl_agent_chess_move()
     chess_move_str = chess_move['chess_move_str']
     # chess_move_str = controller.agentmove['chess_move_str']
     # chess_move_src = chess_move['move_source']
-    legal_moves = controller.player.get_legal_moves()
-    fen_string = controller.player.get_fen_str()
+    legal_moves = usedGamerooms[roomKey].player.get_legal_moves()
+    fen_string = usedGamerooms[roomKey].player.get_fen_str()
     # player_turn = controller.play.playerTurnMessage()
     returnObj = {"legal_moves": legal_moves,
                 # "player_turn": player_turn,
                 "best_move": chess_move_str,
                 "fen_string": fen_string,
-                "ascii": str(controller.player.get_chessboard())
+                "ascii": str(usedGamerooms[roomKey].player.get_chessboard())
                 }
 
     print(returnObj)
     return jsonify(returnObj)
 
-@app.route("/playermoves")
+@app.route("/<int:roomKey>/playermoves")
 @cross_origin()
-def playermoves():
-    fen_string = controller.player.get_fen_str()
+def playermoves(roomKey):
+    fen_string = usedGamerooms[roomKey].player.get_fen_str()
     print(fen_string)
     # player_turn = controller.play.playerTurnMessage()
     return {
             "fen_string": fen_string,
-            "ascii": str(controller.player.get_chessboard())
+            "ascii": str(usedGamerooms[roomKey].player.get_chessboard())
             }
 
 # @app.route("/moveagent", methods=['GET', 'POST'])
@@ -149,13 +166,14 @@ def playermoves():
 #         # print(controller.board)
 #         return "Success"
 
-@app.route("/moveblack", methods=['POST'])
+@app.route("/<int:roomKey>/moveblack", methods=['POST'])
 @cross_origin()
-def moveblack():
+def moveblack(roomKey):
     if request.method == 'POST':
         move = request.json
         # controller.playerInput(move)
-        controller.player.recv_opp_move(str(move))
+        # controller.player.recv_opp_move(str(move))
+        usedGamerooms[roomKey].player.recv_opp_move(str(move))
         print(move)
         # print(controller.board)
         returnObj = {'Success':True}
